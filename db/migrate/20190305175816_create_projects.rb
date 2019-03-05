@@ -9,6 +9,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
 
       t.integer :saats_count, default: 0
       t.timestamps
+      t.index :uuid
     end
   end
 end

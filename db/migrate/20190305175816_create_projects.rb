@@ -7,6 +7,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.string :uuid
       t.string :color, limit: 6
 
+      t.integer :saats_count, default: 0
       t.timestamps
     end
   end

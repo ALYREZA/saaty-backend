@@ -4,7 +4,7 @@ class CreateClients < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :uuid
       t.integer :projects_count, default: 0
-      t.references :user
+      t.references :user, foreign_key: true
       t.timestamps
     end
   end

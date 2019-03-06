@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
     t.string "password"
     t.string "zone", limit: 50, default: "Tehran"
     t.integer "status", limit: 1, default: 0
-    t.boolean "isAdmin", default: false
+    t.integer "is_admin", limit: 1, default: 0
     t.integer "plan", limit: 1, default: 0
     t.integer "projects_count", default: 0
     t.integer "clients_count", default: 0

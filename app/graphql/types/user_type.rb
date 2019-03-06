@@ -6,7 +6,7 @@ module Types
         # field :password, String, null: false
         field :zone, String, null: false
         field :status, Int, null: false
-        field :is_admin, Int, null: false
+        # field :is_admin, Int, null: false
         field :plan, Int, null: false
         field :projects_count, Int, null: false
         field :clients_count, Int, null: false

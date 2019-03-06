@@ -5,7 +5,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.references :user, foreign_key: true
       t.references :client, foreign_key: true
       t.string :uuid
-      t.string :color, limit: 6, defualt: SecureRandom.hex(3)
+      t.string :color, limit: 6, default: SecureRandom.hex(3)
 
       t.integer :saats_count, default: 0
       t.timestamps

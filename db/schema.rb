@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
     t.bigint "user_id"
     t.bigint "client_id"
     t.string "uuid"
-    t.string "color", limit: 6
+    t.string "color", limit: 6, default: "6e7e2f"
     t.integer "saats_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -2,9 +2,9 @@ class GraphqlController < ApplicationController
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
-    puts "========================================="
-    request.headers.each { |key,value| puts "#{key} and #{value}" }
-    puts "========================================="
+    # puts "========================================="
+    # request.headers.each { |key,value| puts "#{key} and #{value}" }
+    # puts "========================================="
 
     operation_name = params[:operationName]
     context = {

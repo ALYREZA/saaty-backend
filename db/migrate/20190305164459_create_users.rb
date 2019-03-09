@@ -1,7 +1,7 @@
 class CreateUsers < ActiveRecord::Migration[5.2]
   def change
     create_table :users do |t|
-      t.string :name
+      t.string :name, :limit => 50
       t.string :email
       t.string :password
       t.string :zone, limit: 50, default: "Tehran"

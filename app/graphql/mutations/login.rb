@@ -17,6 +17,7 @@ module Mutations
             rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
 
             token = JWT.encode payload, rsa_private, 'RS384'
+            context[:session][:token] = token
             { user: user, token: token }
         end
     end

@@ -13,7 +13,7 @@ module Mutations
             return unless user
             return unless user.authenticate(password)
           
-            payload = { data: user }
+            payload = {data: user.id}
             rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
 
             token = JWT.encode payload, rsa_private, 'RS384'

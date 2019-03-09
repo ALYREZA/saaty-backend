@@ -28,7 +28,8 @@ class GraphqlController < ApplicationController
       rsa_public = rsa_private.public_key
       begin
         decoded_token = JWT.decode session[:token], rsa_public, true, { algorithm: 'RS384' }
-        return decoded_token[0]["data"]
+        user_id = decoded_token[0]["data"].to_i
+        User.find_by id: user_id
       rescue JWT::ImmatureSignature => e
         return e
       end
@@ -38,7 +39,8 @@ class GraphqlController < ApplicationController
       rsa_public = rsa_private.public_key
       begin
         decoded_token = JWT.decode self.bearer_token, rsa_public, true, { algorithm: 'RS384' }
-        return decoded_token[0]["data"]
+        user_id = decoded_token[0]["data"].to_i
+        User.find_by id: user_id
       rescue JWT::ImmatureSignature => e
         return e
       end

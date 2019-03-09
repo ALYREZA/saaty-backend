@@ -1,7 +1,6 @@
 module Mutations
     class CreateClient < BaseMutation
         argument :name, String, required: true
-        argument :user, Types::UserType, required: true
 
         type Types::ClientType
 

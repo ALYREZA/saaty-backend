@@ -12,8 +12,11 @@ module Mutations
             user = User.find_by email: email
             return unless user
             return unless user.authenticate(password)
-            crypt = ActiveSupport::MessageEncryptor.new(Rails.application.credentials[:secret_key_base].byteslice(0..31))
-            token = crypt.encrypt_and_sign("user-id:#{ user.id }")
+          
+            payload = { data: user }
+            rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
+
+            token = JWT.encode payload, rsa_private, 'RS384'
             { user: user, token: token }
         end
     end

@@ -2,6 +2,8 @@ require_relative 'boot'
 
 require 'rails/all'
 require 'uuidtools'
+require 'chronic'
+Chronic.time_class = Time.zone
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

@@ -1,15 +1,25 @@
 class CreateProjects < ActiveRecord::Migration[5.2]
   def change
     create_table :projects do |t|
+
+      t.decimal :cost, precision: 10, scale: 2, default: nil
+
+      t.integer :estimate, default: nil
+      t.integer :saats_count, default: 0
+
+      t.string :uuid, limit: 36
       t.string :name
-      t.references :user, foreign_key: true
-      t.references :client, foreign_key: true
-      t.string :uuid
       t.string :color, limit: 6, default: SecureRandom.hex(3)
 
-      t.integer :saats_count, default: 0
+      t.text :description, default: nil
+
+      t.references :user, foreign_key: true
+      t.references :client, foreign_key: true
+      
       t.timestamps
+
       t.index :uuid
+      t.index :name
     end
   end
 end

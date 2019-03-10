@@ -5,5 +5,6 @@ module Types
     field :create_client, mutation: Mutations::CreateClient
     field :create_project, mutation: Mutations::CreateProject
     field :start, mutation: Mutations::StartRecord
+    field :stop, mutation: Mutations::EndRecord
   end
 end

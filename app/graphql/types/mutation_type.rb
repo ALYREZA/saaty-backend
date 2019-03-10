@@ -4,6 +4,6 @@ module Types
     field :login, mutation: Mutations::Login
     field :create_client, mutation: Mutations::CreateClient
     field :create_project, mutation: Mutations::CreateProject
-    field :record, mutation: Mutations::CreateSaat
+    field :start, mutation: Mutations::StartRecord
   end
 end

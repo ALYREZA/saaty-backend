@@ -1,5 +1,5 @@
 module Mutations
-    class CreateSaat < BaseMutation
+    class StartRecord < BaseMutation
         argument :start, String, required: true
         argument :client_uuid, String, required: true
         argument :project_uuid, String, required: true

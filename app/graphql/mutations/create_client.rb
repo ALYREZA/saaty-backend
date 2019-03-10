@@ -4,12 +4,12 @@ module Mutations
         argument :description, String, required: false
         type Types::ClientType
 
-        def resolve(name: nil, describtion: nil)
+        def resolve(name: nil, description: nil)
             Client.create!(
                 name: name,
                 uuid: UUIDTools::UUID.random_create,
                 user: context[:current_user],
-                description: describtion
+                description: description
             )
         rescue ActiveRecord::RecordInvalid => e
             GraphQL::ExecutionError.new("#{e.record.errors.full_messages.join(', ')}")

@@ -7,6 +7,8 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.integer :estimate, default: nil
       t.integer :saats_count, default: 0
 
+      t.integer :status, limit: 1, default: 0
+
       t.string :uuid, limit: 36
       t.string :name
       t.string :color, limit: 6, default: SecureRandom.hex(3)

@@ -4,6 +4,7 @@ module Types
         field :uuid, String, null: false
         field :color, String, null: false
         field :client, Types::ClientType, null: false
+        field :status, Int, null: false
         field :description, String, null: true
         field :cost, Float, null: true
         field :estimate, Int, null: true

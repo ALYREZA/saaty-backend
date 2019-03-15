@@ -6,5 +6,6 @@ module Types
     field :create_project, mutation: Mutations::CreateProject
     field :start, mutation: Mutations::StartRecord
     field :stop, mutation: Mutations::EndRecord
+    field :edit_user, mutation: Mutations::EditUser
   end
 end

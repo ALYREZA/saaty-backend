@@ -3,7 +3,7 @@ module Types
         field :id, ID, null: false
         field :name, String, null: false
         field :email, String, null: false
-        # field :password, String, null: false
+        field :password, String, null: false
         field :zone, String, null: false
         field :status, Int, null: false
         # field :is_admin, Int, null: false

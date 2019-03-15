@@ -11,9 +11,8 @@ module Mutations
             user.name = name if name
             user.password = password if password
             user.zone = zone if zone
-            if user.save!
-                return user
-            end
+            return user if user.save!
+            
         rescue ActiveRecord::RecordInvalid => e
             GraphQL::ExecutionError.new("#{e.record.errors.full_messages.join(', ')}")
         end

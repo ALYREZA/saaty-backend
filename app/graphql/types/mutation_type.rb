@@ -7,5 +7,6 @@ module Types
     field :start, mutation: Mutations::StartRecord
     field :stop, mutation: Mutations::EndRecord
     field :edit_user, mutation: Mutations::EditUser
+    field :edit_client, mutation: Mutations::EditClient
   end
 end

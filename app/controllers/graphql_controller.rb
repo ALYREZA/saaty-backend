@@ -2,10 +2,15 @@ class GraphqlController < ApplicationController
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
+    # puts "========================================="
+    # request.headers.each { |key,value| puts "#{key} and #{value}" }
+    # puts "========================================="
+
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      # current_user: current_user,
+      session: session,
+      current_user: current_user,
     }
     result = SaatySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -16,6 +21,37 @@ class GraphqlController < ApplicationController
 
   private
 
+  def current_user
+    if Rails.env.development?
+      return unless session[:token]
+      rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
+      rsa_public = rsa_private.public_key
+      begin
+        decoded_token = JWT.decode session[:token], rsa_public, true, { algorithm: 'RS384' }
+        user_id = decoded_token[0]["data"].to_i
+        User.find_by id: user_id
+      rescue JWT::ImmatureSignature => e
+        return e
+      end
+    else
+      return unless request.headers["Authorization"]
+      rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
+      rsa_public = rsa_private.public_key
+      begin
+        decoded_token = JWT.decode self.bearer_token, rsa_public, true, { algorithm: 'RS384' }
+        user_id = decoded_token[0]["data"].to_i
+        User.find_by id: user_id
+      rescue JWT::ImmatureSignature => e
+        return e
+      end
+    end
+  end
+
+  def bearer_token
+    pattern = /^Bearer /
+    header  = request.headers["Authorization"] # <= env
+    header.gsub(pattern, '') if header && header.match(pattern)
+  end
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)
     case ambiguous_param

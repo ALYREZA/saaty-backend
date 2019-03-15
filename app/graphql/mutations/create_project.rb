@@ -4,11 +4,12 @@ module Mutations
         argument :client_uuid, String, required: true
         argument :color, String, required: false
         argument :description, String, required: false
-        argument :estimate, Int, required: false
+        argument :budget, Float, required: false
+        argument :budget_type, Int, required: false
         argument :cost, Float, required: false
         type Types::ProjectType
 
-        def resolve(name:nil, client_uuid: nil, color: nil, description: nil, estimate: nil, cost: nil)
+        def resolve(name:nil, client_uuid: nil, color: nil, description: nil, budget: nil, cost: nil, budget_type: nil)
             Project.create!(
                 name: name,
                 uuid: UUIDTools::UUID.random_create,
@@ -16,7 +17,8 @@ module Mutations
                 client: Client.find_by!(uuid: client_uuid, user: context[:current_user]),
                 color: color ? color : SecureRandom.hex(3),
                 description: description,
-                estimate: estimate,
+                budget: budget,
+                budget_type: budget_type,
                 cost: cost
 
             )

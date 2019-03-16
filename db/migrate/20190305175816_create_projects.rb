@@ -5,7 +5,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.decimal :cost, precision: 10, scale: 2, default: nil
       t.decimal :budget, precision: 15, scale: 2, default: nil
 
-      t.integer :budget_type, limit: 1, default: nil
+      t.integer :budget_type, limit: 1, default: 0
       t.integer :saats_count, default: 0
 
       t.integer :status, limit: 1, default: 0

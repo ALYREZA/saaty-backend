@@ -11,7 +11,7 @@ module Mutations
 
         type Types::ProjectType
 
-        def resolve(cost: nil, budget: nil,budget_type: nil,status: nil, name: nil, color: nil, description: nil  )
+        def resolve(uuid: nil,cost: nil, budget: nil,budget_type: nil,status: nil, name: nil, color: nil, description: nil  )
             project = Project.find_by!(uuid: uuid, user: context[:current_user])
             project.cost = cost if cost
             project.budget = budget if budget

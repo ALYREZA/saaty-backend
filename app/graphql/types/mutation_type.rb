@@ -11,6 +11,6 @@ module Types
     field :edit_project, mutation: Mutations::EditProject
     field :delete_client, mutation: Mutations::DeleteClient
     field :delete_projects, mutation: Mutations::DeleteProjects
-
+    field :delete_records, mutation: Mutations::DeleteRecords
   end
 end

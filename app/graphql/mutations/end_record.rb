@@ -22,7 +22,7 @@ module Mutations
                 duration_hours = duration_seconds / 3600
                 record.duration = duration_hours
                 record.end = stoppedTime
-                record.save!
+                return record if record.save!
             else
                 record
             end

@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.decimal "cost", precision: 10, scale: 2
     t.decimal "budget", precision: 15, scale: 2
-    t.integer "budget_type", limit: 1
+    t.integer "budget_type", limit: 1, default: 0
     t.integer "saats_count", default: 0
     t.integer "status", limit: 1, default: 0
     t.string "uuid", limit: 36
     t.string "name"
-    t.string "color", limit: 6, default: "d9aaee"
+    t.string "color", limit: 6, default: "b427b8"
     t.text "description"
     t.bigint "user_id"
     t.bigint "client_id"

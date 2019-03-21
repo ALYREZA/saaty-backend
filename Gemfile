@@ -27,6 +27,7 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 gem 'graphql', '1.9.3'
+gem 'graphql-query-resolver'
 gem 'uuidtools'
 gem 'chronic'
 gem 'pundit'

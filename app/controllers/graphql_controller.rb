@@ -11,6 +11,12 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       session: session,
       current_user: current_user,
+      user_plan: current_user.plan,
+      user_projects: current_user.projects_count,
+      user_clients: current_user.clients_count,
+      user_status: current_user.status,
+      user_zone: current_user.zone
+
     }
     result = SaatySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
@@ -20,7 +26,6 @@ class GraphqlController < ApplicationController
   end
 
   private
-
   def current_user
     if Rails.env.development?
       return unless session[:token]

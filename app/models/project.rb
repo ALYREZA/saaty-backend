@@ -7,4 +7,14 @@ class Project < ApplicationRecord
   belongs_to :user, counter_cache: :projects_count
   belongs_to :client, counter_cache: :projects_count
   has_many :times, class_name: "Saat", foreign_key: "project_id", dependent: :delete_all
+  before_create :userChecked
+  scope :like, ->(field, value) { where arel_table[field].matches("%#{value}%") }
+
+
+  private
+
+  def userChecked
+    user = self.user
+    
+  end
 end

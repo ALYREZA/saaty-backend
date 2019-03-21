@@ -4,4 +4,7 @@ class Client < ApplicationRecord
     belongs_to :user, counter_cache: :clients_count
     has_many :projects, class_name: "Project", foreign_key: "client_id", :dependent => :destroy
     has_many :times, class_name: "Saat", foreign_key: "client_id"
+
+    scope :like, ->(field, value) { where arel_table[field].matches("%#{value}%") }
+
 end

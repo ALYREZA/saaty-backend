@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_180807) do
+ActiveRecord::Schema.define(version: 2019_03_21_123920) do
 
   create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "uuid", limit: 36
@@ -22,6 +22,24 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_clients_on_user_id"
     t.index ["uuid"], name: "index_clients_on_uuid"
+  end
+
+  create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "order_id"
+    t.integer "status", limit: 1, default: 1
+    t.integer "track_id"
+    t.string "payment_id", limit: 50
+    t.integer "amount"
+    t.string "card_no", limit: 16
+    t.timestamp "payment_date"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["payment_id"], name: "index_payments_on_payment_id"
+    t.index ["status"], name: "index_payments_on_status"
+    t.index ["track_id"], name: "index_payments_on_track_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -80,6 +98,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
   end
 
   add_foreign_key "clients", "users"
+  add_foreign_key "payments", "users"
   add_foreign_key "projects", "clients"
   add_foreign_key "projects", "users"
   add_foreign_key "saats", "clients"

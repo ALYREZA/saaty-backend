@@ -44,7 +44,7 @@ class GraphqlController < ApplicationController
 
   def bearer_token
     pattern = /^Bearer /
-    header  = request.headers["Authorization"] # <= env
+    header  = request.headers["Authorization"]
     header.gsub(pattern, '') if header && header.match(pattern)
   end
   # Handle form data, JSON body, or a blank value

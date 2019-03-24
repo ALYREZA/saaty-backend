@@ -10,7 +10,7 @@ class PaymentController < ApplicationController
   CustomHeader = {
     'Content-Type': "application/json",
     'X-API-KEY': "2a7be493-32b0-4543-81a6-4fab56760d28",
-    'X-SANDBOX': 1
+    'X-SANDBOX': Rails.env.development? 1 : 0
   }
   def callback
     begin

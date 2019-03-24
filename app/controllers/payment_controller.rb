@@ -6,7 +6,7 @@ require 'jwt'
 
 class PaymentController < ApplicationController
   Hmac_secret = "@LYR3ZA$$"
-  IdPayUrl = "https://api.idpay.ir/v1.1/"
+  IdPayUrl = "https://api.idpay.ir/v1.1"
   CustomHeader = {
     'Content-Type': "application/json",
     'X-API-KEY': "2a7be493-32b0-4543-81a6-4fab56760d28",
@@ -25,10 +25,17 @@ class PaymentController < ApplicationController
       payment_date = Time.zone.now
       checkStatus(status, order_id, id)
       pay = Payment.find_by!(order_id: order_id, payment_id: id)
-      pay.track_id = track_id
-      pay.card_no = card_no
-      pay.payment_date = payment_date
-      render json: pay if pay.save!
+      if pay.status < 100 && status === 10
+        pay.track_id = track_id
+        pay.card_no = card_no
+        pay.payment_date = payment_date
+        if pay.save!
+          render json: {"error-code": nil, message: "successfully created"}, :status => 200 
+        else
+          render json: {"error-code": 508, message: "System error"}, :status => 500 
+        end
+      end
+      render json: {"error-code": nil, message: "successfully saved !"}, :status => 201
     rescue JWT::ExpiredSignature
       render json: {"error-code": 400, "message": "token expired"}, status: 404
     rescue JWT::ImmatureSignature
@@ -43,7 +50,9 @@ class PaymentController < ApplicationController
     payAttention = { data: email, exp: exp }
     token = JWT.encode payAttention, Hmac_secret, 'HS256'
     encodeToken = URI.encode(token)
-    fullUrl = paymentCallback_path(encodeToken)
+    paymentPathAddress = Rails.application.routes.url_helpers.payment_path(token: encodeToken)
+    appPath = Rails.configuration.app['url']
+    fullUrl = "#{appPath}#{paymentPathAddress}"
     payload = {
       "order_id": orderId.to_s,
       "amount": priceOfPlan(plan),
@@ -52,13 +61,30 @@ class PaymentController < ApplicationController
       "callback": fullUrl
     }
     paymentResponse = sendPostRequest("payment",payload)
-    render json: {"error-code": nil, message: "successfully created"}, status: 201
+
+    return {data: paymentResponse[:data], status: paymentResponse[:status]}
   end
 
 
   def checkStatus(status,orderId, payment_id)
+    what = case status
+    when 1
+      "Payment has not been made"
+    when 2
+      "Payment has been unsuccessful"
+    when 3
+      "An error occurred"
+    when 4
+      "Blocked"
+    when 5
+      "Return to the payer"
+    when 6
+      "System back"
+    end
     if status === 10
       makeVerifyRequestToIdPay(orderId, payment_id)
+    else
+      render json: {"error-code": 500+status, message: what}, :status => 500
     end
   end
 
@@ -140,7 +166,8 @@ class PaymentController < ApplicationController
 
   def sendPostRequest(uri, payload)
     begin
-      url = URI.parse("#{IdPayUrl}/#{uri}")
+      fullUrl = "#{IdPayUrl}/#{uri}"
+      url = URI.parse(fullUrl)
       req = Net::HTTP::Post.new(url.to_s)
       CustomHeader.each do |key, value|
         req[key] = value
@@ -154,9 +181,9 @@ class PaymentController < ApplicationController
         sending.verify_mode = OpenSSL::SSL::VERIFY_NONE
         sending.request(req)
       end
-      return {data: res.body, status: res.status }
+      return {data: res.body, status: res.code }
     rescue => e 
-      return "failed #{e}"
+      return { data: "failed #{e}", status: 500 }
     end
 
   end

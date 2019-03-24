@@ -8,14 +8,15 @@ module Mutations
             pay = PaymentController.new
             orderId = UUIDTools::UUID.random_create
             email = context[:current_user].email
-            thr = Thread.new { pay.makeRequestToIdPay(orderId, email, plan) }
-            response = thr.join
-            res_json = response.to_json
+            name = context[:current_user].name
+            respon = pay.makeRequestToIdPay(orderId, name, email, plan[:plan])
+        
+            paymentId = JSON.parse(respon)['id']
             Payment.create!(
-                order_id: orderId,
+                order_id: orderId.to_s,
                 user: context[:current_user],
-                payment_id: res_json.id,
-                amount: pay.choosePlan(plan)
+                payment_id: paymentId,
+                amount: pay.priceOfPlan(plan[:plan])
             )
         rescue ActiveRecord::RecordInvalid => e
             GraphQL::ExecutionError.new("#{e.record.errors.full_messages.join(', ')}")

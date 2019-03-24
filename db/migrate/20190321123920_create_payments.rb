@@ -8,6 +8,9 @@ class CreatePayments < ActiveRecord::Migration[5.2]
       t.integer :amount, default: nil
       t.string :card_no, limit: 16,default: nil
       t.timestamp :payment_date, default: nil
+      t.timestamp :expired_at, default: Time.zone.now + 30.minutes
+      t.timestamp :verified_at, default: nil
+
       t.references :user, foreign_key: true
 
       t.timestamps

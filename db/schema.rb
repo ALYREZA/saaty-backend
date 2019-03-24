@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_180807) do
+ActiveRecord::Schema.define(version: 2019_03_21_123920) do
 
   create_table "clients", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "uuid", limit: 36
@@ -24,6 +24,26 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
     t.index ["uuid"], name: "index_clients_on_uuid"
   end
 
+  create_table "payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "order_id", limit: 50
+    t.integer "status", limit: 1, default: 1
+    t.integer "track_id"
+    t.string "payment_id", limit: 50
+    t.integer "amount"
+    t.string "card_no", limit: 16
+    t.timestamp "payment_date"
+    t.timestamp "expired_at", default: "2019-03-23 09:56:50"
+    t.timestamp "verified_at"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["payment_id"], name: "index_payments_on_payment_id"
+    t.index ["status"], name: "index_payments_on_status"
+    t.index ["track_id"], name: "index_payments_on_track_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
+  end
+
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.decimal "cost", precision: 10, scale: 2
     t.decimal "budget", precision: 15, scale: 2
@@ -32,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
     t.integer "status", limit: 1, default: 0
     t.string "uuid", limit: 36
     t.string "name"
-    t.string "color", limit: 6, default: "b427b8"
+    t.string "color", limit: 6, default: "81e9b5"
     t.text "description"
     t.bigint "user_id"
     t.bigint "client_id"
@@ -47,13 +67,13 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
   create_table "saats", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "uuid", limit: 36
     t.decimal "duration", precision: 10, scale: 2
-    t.bigint "user_id"
-    t.bigint "client_id"
-    t.bigint "project_id"
     t.timestamp "start"
     t.timestamp "end"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.bigint "client_id"
+    t.bigint "project_id"
     t.index ["client_id"], name: "index_saats_on_client_id"
     t.index ["duration"], name: "index_saats_on_duration"
     t.index ["end"], name: "index_saats_on_end"
@@ -80,6 +100,7 @@ ActiveRecord::Schema.define(version: 2019_03_05_180807) do
   end
 
   add_foreign_key "clients", "users"
+  add_foreign_key "payments", "users"
   add_foreign_key "projects", "clients"
   add_foreign_key "projects", "users"
   add_foreign_key "saats", "clients"

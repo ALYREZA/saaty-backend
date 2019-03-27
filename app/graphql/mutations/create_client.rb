@@ -11,7 +11,7 @@ module Mutations
                 user: context[:current_user],
                 description: description
             )
-        rescue ActiveRecord::RecordInvalid => e
+        rescue => e
             GraphQL::ExecutionError.new("#{e.record.errors.full_messages.join(', ')}")
         end
     end

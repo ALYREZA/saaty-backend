@@ -7,4 +7,14 @@ class Client < ApplicationRecord
 
     scope :like, ->(field, value) { where arel_table[field].matches("%#{value}%") }
 
+    before_create :checkMe
+    def checkMe
+        if user.plan < 5
+            errors.add(:base, "can't be destroyed cause x,y or z 1")
+            errors.add(:base, "can't be destroyed cause x,y or z 2")
+            errors.add(:base, "can't be destroyed cause x,y or z 3")
+
+            throw(:abort, "something went wrong")
+        end
+    end
 end

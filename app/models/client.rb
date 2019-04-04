@@ -7,4 +7,12 @@ class Client < ApplicationRecord
 
     scope :like, ->(field, value) { where arel_table[field].matches("%#{value}%") }
 
+    before_create :checkMe
+    def checkMe
+        if user.isExpired
+            errors.add(:base, "Your Free Trial Finished") if user.plan === 0
+            errors.add(:base, "your account has been expire for about #{user.daysFromExpire} days ago")
+            throw(:abort, "something went wrong")
+        end
+    end
 end

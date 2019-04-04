@@ -1,4 +1,3 @@
 class ApplicationController < ActionController::Base
-    include Pundit
-    protect_from_forgery
+    skip_forgery_protection
 end

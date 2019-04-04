@@ -12,6 +12,7 @@ class PaymentController < ApplicationController
     'X-API-KEY': "2a7be493-32b0-4543-81a6-4fab56760d28",
     'X-SANDBOX': 1
   }
+  BasePrice = 6750
   def callback
     begin
       decodeToken = URI.decode(params[:token])
@@ -46,7 +47,7 @@ class PaymentController < ApplicationController
   end
 
   def makeRequestToIdPay(orderId, name,email, plan)
-    exp = Time.now.to_i + 10 * 60
+    exp = Time.zone.now.to_i + 10 * 60
     payAttention = { data: email, exp: exp }
     token = JWT.encode payAttention, Hmac_secret, 'HS256'
     encodeToken = URI.encode(token)
@@ -121,41 +122,29 @@ class PaymentController < ApplicationController
   def priceOfPlan(plan)
     what = case plan
     when 1
-      70000
+      BasePrice
     when 2
-      120000
-    when 3
-      840000
-    when 4
-      1440000
+      BasePrice * 12
     end
 
-    return what
+    return what.floor
   end
 
   def converPrice2Plan(price)
     what = case price
-    when 70000
+    when BasePrice
       1
-    when 120000
+    when BasePrice * 12
       2
-    when 840000
-      3
-    when 1440000
-      4
     end
-    return what
+    return what.floor
   end
   def dateOfPlan(plan)
     what = case plan
     when 1
       1.month
     when 2
-      1.month
-    when 3
-      12.month
-    when 4
-      12.month
+      14.month
     end
 
     return what

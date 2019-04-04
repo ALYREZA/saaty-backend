@@ -14,9 +14,8 @@ module Mutations
             return unless user.authenticate(password)
           
             payload = {data: user.id}
-            rsa_private = OpenSSL::PKey::RSA.new(File.read("./config/private.pem"))
-
-            token = JWT.encode payload, rsa_private, 'RS384'
+            rsa_private = File.read("./config/master.key")
+            token = JWT.encode payload, rsa_private, 'HS256'
             context[:session][:token] = token
             { user: user, token: token }
         end

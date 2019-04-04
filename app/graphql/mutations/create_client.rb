@@ -11,8 +11,10 @@ module Mutations
                 user: context[:current_user],
                 description: description
             )
-        rescue => e
+        rescue ActiveRecord::RecordInvalid => e
             GraphQL::ExecutionError.new("#{e.record.errors.full_messages.join(', ')}")
+        rescue ActiveRecord::RecordNotSaved => b
+            GraphQL::ExecutionError.new("#{b.record.errors.full_messages.join(', ')}")
         end
     end
 end

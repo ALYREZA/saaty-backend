@@ -9,11 +9,8 @@ class Client < ApplicationRecord
 
     before_create :checkMe
     def checkMe
-        if user.plan < 5
-            errors.add(:base, "can't be destroyed cause x,y or z 1")
-            errors.add(:base, "can't be destroyed cause x,y or z 2")
-            errors.add(:base, "can't be destroyed cause x,y or z 3")
-
+        if user.isExpired
+            errors.add(:base, "your account has been expire for about #{user.daysFromExpire} days ago, access to app for about #{user.daysRemaining} days")
             throw(:abort, "something went wrong")
         end
     end

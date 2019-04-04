@@ -14,10 +14,6 @@ class User < ApplicationRecord
         return Password.new(self.password) == pass
     end
 
-    def checkPlan
-        false
-    end
-
     def isExpired 
         justNow = Time.parse Time.zone.now.to_s
         expired = true
@@ -26,7 +22,7 @@ class User < ApplicationRecord
         if totalSeconds > 0
             expired = false
         end
-        return true
+        return expired
     end
 
     def daysFromExpire

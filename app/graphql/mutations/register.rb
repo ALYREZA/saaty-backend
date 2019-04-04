@@ -10,7 +10,8 @@ module Mutations
             User.create!(
                 name: name,
                 email: email,
-                password: password
+                password: password,
+                expired_at: Time.zone.now + 7.day
             )
             
         rescue ActiveRecord::RecordInvalid => e
